@@ -1,18 +1,20 @@
 defmodule IoMust do
-  @moduledoc """
-  Documentation for `IoMust`.
-  """
+  def receive_message(message) do
+    IO.puts message
+  end
 
-  @doc """
-  Hello world.
+  def send_message(recipient, message) do
+    spawn_task(__MODULE__, :receive_message, recipient, [message])
+  end
 
-  ## Examples
+  def spawn_task(module, fun, recipient, args) do
+    recipient
+    |> remote_supervisor()
+    |> Task.Supervisor.async(module, fun, args)
+    |> Task.await()
+  end
 
-      iex> IoMust.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  defp remote_supervisor(recipient) do
+    {IoMust.TaskSupervisor, recipient}
   end
 end

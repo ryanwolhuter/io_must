@@ -10,6 +10,7 @@ defmodule IoMust.Application do
     children = [
       # Starts a worker by calling: IoMust.Worker.start_link(arg)
       # {IoMust.Worker, arg}
+      {Task.Supervisor, name: IoMust.TaskSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
