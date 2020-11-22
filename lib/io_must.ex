@@ -1,6 +1,12 @@
 defmodule IoMust do
   def receive_message(message) do
-    IO.puts message
+    message
+    |> encode_message_to_osc
+    |> IO.puts
+  end
+
+  def encode_message_to_osc(%{address: address, arguments: arguments}) do
+    OSC.encode!(%OSC.Message{address: address, arguments: arguments})
   end
 
   def send_message(recipient, message) do
